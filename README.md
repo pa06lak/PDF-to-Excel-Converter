@@ -1,4 +1,4 @@
-#PDF-to-Excel Converter
+# PDF-to-Excel Converter
 
 This Python script extracts key information from multiple PDF files and saves them in an Excel spreadsheet. It uses the tabula, pandas, pathlib, os, camelot, and openpyxl packages to extract and manipulate data.
 
