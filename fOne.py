@@ -6,7 +6,6 @@ import os
 import camelot
 import openpyxl
 from openpyxl import Workbook
-#import pyexcel-xlsx
 
 def getRes():
     dir_path = './newFolder3'
