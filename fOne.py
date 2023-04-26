@@ -33,7 +33,7 @@ def getRes():
 
 def getLANnum(f,LANlist):
     LANnum = f.replace("LAN", "")
-    LANnum = LANnum.replace(".pdataframe", "")
+    LANnum = LANnum.replace(".pdf", "")
     return LANnum
 
 def getName(dataframe): 
