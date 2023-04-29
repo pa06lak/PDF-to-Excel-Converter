@@ -77,6 +77,8 @@ def getTelephone(dataframe):
         telephone = telephone[0:12]
     else: 
         telephone = "n/a"
+    if telephone.lower() == "work": 
+        pass
     return telephone
 
 def getInfo(res):
