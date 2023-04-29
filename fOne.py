@@ -9,17 +9,6 @@ from openpyxl import Workbook
 #import pyexcel-xlsx
 
 def getRes():
-    """
-    This is a docstring
-
-    Parameters
-    ----------
-    Void
-
-    Returns
-    -------
-    list (of LAN Files)
-    """
     dir_path = './newFolder3'
     res = []
 
