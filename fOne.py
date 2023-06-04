@@ -6,7 +6,6 @@ import os
 import camelot
 import openpyxl
 from openpyxl import Workbook
-#import pyexcel-xlsx
 
 def getRes():
     dir_path = './newFolder3'
@@ -57,6 +56,7 @@ def getTelephone(dataframe):
         telephone = t2
         sep = "\n"
         stripped = telephone.split(sep,1)[0]
+        stripped = stripped.replace(" ", "") 
         telephone = telephone[0:12]
     elif t1 != "": 
         telephone = t1
@@ -70,34 +70,100 @@ def getTelephone(dataframe):
         pass
     return telephone
 
+def getFName(dataframe): 
+    name1 = dataframe.iat[7,0]
+    if len(name1) != 0: 
+        name = name1
+    else:
+        name = name2
+    sep = '\n'
+    stripped = name.split(sep, 1)[0]
+    stripped = stripped.title()
+    print(stripped)
+    return stripped
+
+def getFDOB(dataframe):  
+    DOB = dataframe.iat[1,4]
+    print(DOB)
+    return DOB
+
+def getFDateOfRef(dataframe): 
+    dateOfReferral = dataframe.iat[7,3]
+    print(dateOfReferral)
+    return dateOfReferral
+
+def getFPracticeAddress(dataframe): 
+    practiceAddress = dataframe.iat[9,1]
+    print(practiceAddress)
+    return practiceAddress
+
+def getFTelephone(dataframe): 
+    telephone = dataframe.iat[3,4]
+    sep = "\n"
+    stripped = telephone.split(sep,1)[0]
+    stripped = stripped.replace(" ", "")
+    telephone = telephone[0:12]
+    print(telephone)
+    return telephone
+
 def getInfo(res):
     csvList = []
     for f in res:
         newlist = []
 
         csv_fileName = f[0:9] + ".csv"
-        fileName = "newFolder3/" + str(f)   
-        tables = camelot.read_pdf(fileName,flavour = "lattice")
+        fileName = "newFolder3/" + str(f)
+
+        tables = camelot.read_pdf(fileName, flavour="lattice")
         store = str(tables[0])
         store = int(store[18]) - 1
-        
+
         first_table = tables[0]
         df = first_table.df
-        
-        LANNumber = getLANnum(f,newlist)
-        newlist.append(LANNumber)
-        newlist.append(getName(df))
-        newlist.append(getDOB(df,store))
-        newlist.append(GetDateOfReferral(df))
-        newlist.append(getpracticeAddress(df))
-        newlist.append(getTelephone(df))
-        for y in range(len(newlist)): 
-            print(newlist[y])
+        num_rows = len(df)
+        print("Number of rows:", num_rows)
 
-        
+        if len(df) <= 18: 
+            print("this, that, and the other")
+            LANNumber = getLANnum(f, newlist)
+            newlist.append(LANNumber)
+            newlist.append(getName(df))
+            newlist.append(getDOB(df, store))
+            newlist.append(GetDateOfReferral(df))
+            newlist.append(getpracticeAddress(df))
+            newlist.append(getTelephone(df))
+            for y in range(len(newlist)): 
+                print(newlist[y])
+
+        else:
+            print("What has happened here")
+            if len(df) > 18:
+                getword = df.iat[18, 0]
+                print(getword)
+                if "FACIAL" in getword: 
+                    print(df)
+                    LANNumber = getLANnum(f, newlist)
+                    newlist.append(LANNumber)
+                    newlist.append(getFName(df))
+                    newlist.append(getFDOB(df))
+                    newlist.append(getFDateOfRef(df))
+                    newlist.append(getFPracticeAddress(df))
+                    newlist.append(getFTelephone(df))
+                    print("Something awesome")
+                else: 
+                    LANNumber = getLANnum(f, newlist)
+                    newlist.append(LANNumber)
+                    newlist.append(getName(df))
+                    newlist.append(getDOB(df, store))
+                    newlist.append(GetDateOfReferral(df))
+                    newlist.append(getpracticeAddress(df))
+                    newlist.append(getTelephone(df))
+                    for y in range(len(newlist)): 
+                        print(newlist[y])
+
         csvList.append(newlist)
-    return csvList
 
+    return csvList
 def makeTable(csvList): 
     workbook = openpyxl.load_workbook('newExcel.xlsx')
     sheet = workbook["pyexcel_sheet1"]
@@ -107,12 +173,19 @@ def makeTable(csvList):
 
     workbook.save("newExcel.xlsx")
 
-#res = getRes()
-#csvList = getInfo(res)
-#makeTable(csvList)
 
 if __name__ == "__main__":
     res = getRes()
     csvList = getInfo(res)
     makeTable(csvList)
+
+
+
+
+
+
+
+
+
+
     
